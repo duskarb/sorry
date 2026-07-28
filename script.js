@@ -357,13 +357,13 @@ const hotspots = [
 ];
 
 const fallbackRegion = {
-  issue: "근거 부족 지목 논란",
+  issue: "애매한 존재감 논란",
   subject: "화면 속 출연자",
-  thing: "정확히 특정되지 않은 화면의 여백",
-  behavior: "충분한 근거 없이 문제 지점으로 오해될 수 있게 방치한",
-  interpretation: "책임 소재가 흐릿한 장면을 그대로 노출한 태도",
+  thing: "정확히 해명하기 어려운 지점",
+  behavior: "명확히 해명하기 어려운 방식으로 장면 안에 존재한",
+  interpretation: "어디를 봐도 문제가 될 수 있다는 가능성을 방치한 태도",
   harmed: "불편함의 근거를 직접 찾아야 했던 시청자 여러분",
-  correction: "의심받을 여지 자체를 줄이도록 화면 구성을 다시 점검하고",
+  correction: "오해의 소지가 적은 형태로 화면에 머무르고",
 };
 
 function pad(value) {
@@ -411,39 +411,17 @@ function getRegion(point) {
   const ranked = hotspots
     .map((hotspot) => ({
       ...hotspot,
-      distance: distance(point, hotspot),
       score: distance(point, hotspot) / hotspot.r,
     }))
     .sort((a, b) => a.score - b.score);
 
-  const closest = ranked[0];
-
-  if (!closest || closest.score > 1.45) {
-    return {
-      ...fallbackRegion,
-      nearestIssue: closest?.issue,
-      precision: "부정확",
-    };
-  }
-
-  return {
-    ...closest,
-    precision: closest.score <= 0.65 ? "정밀" : "인접",
-  };
+  return ranked[0] || fallbackRegion;
 }
 
 function generateApology(region) {
   const now = formatTime();
-  const label = region.precision === "부정확" ? "예비 지적" : `${region.precision} 지적`;
-  const nearest = region.nearestIssue ? `\n가장 가까운 의심 지점: ${region.nearestIssue}` : "";
 
-  return `[${label}: ${region.issue}]
-지목 대상: ${region.thing}${nearest}
-문제 행위: ${region.behavior} 점
-문제의 핵심: ${region.interpretation}
-영향을 받은 분들: ${region.harmed}
-
-저는 ${region.subject}로서, 금일 ${now}경 화면 안의 ${region.thing} 부근에서 ${region.behavior} 점에 대해 사과드립니다. 단순히 "그렇게 보일 줄 몰랐다"는 말로 넘길 수 없는 일입니다. 장면 안에 놓인 표정, 자세, 사물, 여백은 모두 보는 사람에게 하나의 태도로 전달되는데, 저는 그 전달 방식을 충분히 점검하지 못했습니다.
+  return `저는 ${region.subject}로서, 금일 ${now}경 화면 안의 ${region.thing} 부근에서 ${region.behavior} 점에 대해 사과드립니다. 단순히 "그렇게 보일 줄 몰랐다"는 말로 넘길 수 없는 일입니다. 장면 안에 놓인 표정, 자세, 사물, 여백은 모두 보는 사람에게 하나의 태도로 전달되는데, 저는 그 전달 방식을 충분히 점검하지 못했습니다.
 
 특히 이번 지점은 ${region.interpretation}으로 읽힐 수 있었습니다. 이로 인해 ${region.harmed}께 불필요한 해석의 부담과 정서적 피로를 드렸습니다. 문제를 사소한 소품이나 우연한 포즈 탓으로 돌리지 않겠습니다. 제가 그 장면 안에 있었고, 그 장면이 그대로 보이도록 두었다는 사실 자체가 책임의 출발점이라고 받아들이겠습니다.
 
