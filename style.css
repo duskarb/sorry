@@ -1,0 +1,114 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+main {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #000;
+}
+
+.scene-button {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #000;
+  cursor: pointer;
+}
+
+.scene-button:focus {
+  outline: none;
+}
+
+.scene-button:focus-visible {
+  outline: 8px solid #ffe14a;
+  outline-offset: -8px;
+}
+
+#scene {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.print-area {
+  position: fixed;
+  left: -200vw;
+  top: 0;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 24mm 22mm;
+  color: #000;
+  background: #fff;
+  font-family: "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+}
+
+.doc-time {
+  margin: 0 0 12mm;
+  font-size: 10pt;
+}
+
+.print-area h1 {
+  margin: 0 0 12mm;
+  text-align: center;
+  font-size: 25pt;
+  letter-spacing: 0;
+}
+
+#apologyText {
+  margin: 0;
+  white-space: pre-line;
+  font-size: 11.5pt;
+  font-weight: 500;
+  line-height: 1.68;
+}
+
+.command {
+  margin: 12mm 0 0;
+  padding: 4mm 0;
+  border: 2px solid #000;
+  text-align: center;
+  font-size: 21pt;
+  font-weight: 900;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body {
+    overflow: visible;
+    background: #fff;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #printArea,
+  #printArea * {
+    visibility: visible;
+  }
+
+  #printArea {
+    position: fixed;
+    inset: 0;
+    width: auto;
+    min-height: auto;
+  }
+}
