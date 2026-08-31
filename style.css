@@ -1,3 +1,8 @@
+:root {
+  color-scheme: dark;
+  font-family: "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -23,7 +28,11 @@ body {
   padding: 0;
   border: 0;
   background: #000;
-  cursor: pointer;
+  cursor: crosshair;
+}
+
+.scene-button:disabled {
+  cursor: wait;
 }
 
 .scene-button:focus {
@@ -31,8 +40,8 @@ body {
 }
 
 .scene-button:focus-visible {
-  outline: 8px solid #ffe14a;
-  outline-offset: -8px;
+  outline: 7px solid #ffe04b;
+  outline-offset: -7px;
 }
 
 #scene {
@@ -40,8 +49,15 @@ body {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  opacity: 1;
   user-select: none;
+  transition: opacity 260ms ease, filter 260ms ease;
   -webkit-user-drag: none;
+}
+
+#scene.is-changing {
+  opacity: 0;
+  filter: brightness(0.35);
 }
 
 .print-area {
@@ -50,39 +66,88 @@ body {
   top: 0;
   width: 210mm;
   min-height: 297mm;
-  padding: 24mm 22mm;
+  padding: 20mm 21mm 16mm;
   color: #000;
   background: #fff;
   font-family: "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
 }
 
-.doc-time {
-  margin: 0 0 12mm;
-  font-size: 10pt;
+.doc-header {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 5mm;
+  border-bottom: 1px solid #aaa;
+}
+
+.doc-time,
+.doc-scene {
+  margin: 0;
+  font-size: 8.5pt;
 }
 
 .print-area h1 {
-  margin: 0 0 12mm;
+  margin: 9mm 0 4mm;
   text-align: center;
   font-size: 25pt;
-  letter-spacing: 0;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
 }
 
-#apologyText {
-  margin: 0;
-  white-space: pre-line;
-  font-size: 11.5pt;
+.print-area h2 {
+  margin: 0 0 8mm;
+  text-align: center;
+  font-size: 13pt;
+}
+
+.apology-text p {
+  margin: 0 0 4.5mm;
+  font-size: 10.6pt;
   font-weight: 500;
-  line-height: 1.68;
+  line-height: 1.66;
+  word-break: keep-all;
+}
+
+.commitment-box {
+  margin-top: 7mm;
+  padding: 5mm 6mm;
+  border: 1.5px solid #111;
+}
+
+.commitment-box h3 {
+  margin: 0 0 3mm;
+  font-size: 11pt;
+}
+
+.commitment-box ul {
+  margin: 0;
+  padding-left: 5mm;
+}
+
+.commitment-box li {
+  margin: 1.8mm 0;
+  font-size: 9.5pt;
+  line-height: 1.5;
 }
 
 .command {
-  margin: 12mm 0 0;
-  padding: 4mm 0;
+  margin: 8mm 0 0;
+  padding: 3.5mm 0;
   border: 2px solid #000;
   text-align: center;
-  font-size: 21pt;
+  font-size: 18pt;
   font-weight: 900;
+}
+
+.signature {
+  margin: 5mm 0 0;
+  text-align: right;
+  font-size: 9.5pt;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #scene {
+    transition: none;
+  }
 }
 
 @media print {
@@ -108,7 +173,7 @@ body {
   #printArea {
     position: fixed;
     inset: 0;
-    width: auto;
-    min-height: auto;
+    width: 210mm;
+    min-height: 297mm;
   }
 }
